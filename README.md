@@ -95,7 +95,45 @@ tastiness and time investment.
 <iframe src="assets/personal-ts-dist.html" width="800" height="600" frameborder="0"></iframe>
 
 ## Framing a Prediction Problem
-...
+
+Predicting the TTT score of a recipe based on its features (cooking time, has meat, number of steps, etc).
+
+**Type:** Regression, since TTT score is a continuous numeric variable.
+
+**Response Variable:** TTT score and personal TTT score. TTT score is the focus of this project, as the goal is to predict whether a recipe is quick and tasty based on its features. Personal TTT score uses the same approach but with personal ratings on the top 100 recipes.
+
+**Evaluation Metrics:** RMSE and R². RMSE was chosen as it penalizes large errors, which is important for a recommendation system where we want to avoid recommending recipes that are very bad. R² gives a sense of how much variance in TTT score is explained by the model.
+
+**Time of Prediction:** All features used in the model are properties of the recipe itself and custom columns based on those properties. These are all known when the recipe is submitted. Average rating is not used as a feature since it is not known at submission time, and it would also be too correlated a predictor since TTT score is based on it.
+
+To identify the best features, I explored correlations between numeric and categorical features and TTT score for both the general dataset and personal subset.
+
+<iframe src="assets/corr-general.html" width="800" height="600" frameborder="0"></iframe>
+
+
+Starting with the general dataset, it looks like all the numeric features are negatively correlated with TTT_Score. The 3 most correlated columns are minutes, n_ingredients, and n_steps, which are all measures of recipe complexity. The minutes being correlated makes the most sense, as the TTT score is directly derived from minutes, so I would expect a strong negative correlation. The n_ingredients and n_steps correlations also make sense, as more complex recipes with more steps and ingredients may be less appealing to users, leading to lower ratings and thus lower TTT scores. After the top most correlated features, the correlations drop off significantly, with the next most correlated features being calories and sodium_pdv. This indicates that the most relevant features for predicting TTT scores are features which are related to recipe complexity, which makes intuitive sense. 
+
+<iframe src="assets/corr-personal.html" width="800" height="600" frameborder="0"></iframe>
+
+For the personal ratings subset, the correlations are generally weaker, but minutes, n_steps, and n_ingredients are still among the most negatively correlated features with personal TTT score. Interestingly, sodium is slightly positively correlated with personal TTT score, which is different from the general dataset where it is negatively correlated.  To me this makes intuitive sense, as I like recipes with more sodium as generally that means more flavor (I love instant ramen and things like that)
+
+While I do have some features to work with here, the correlations are not super strong. I'm also interested in columns which aree not numeric, particularly the has_meat column I made earlier. I will do some OneHotEncodes and see if any categorical features correlate with TTT score as well, and then use all the features I found to be correlated to make a regression model to predict TTT score.
+
+Since numeric features alone were not strongly correlated with TTT score, I made categorical dummy variables to capture additional patterns. The following dummy variables were created:
+
+- `has_meat` — whether the recipe contains meat (chicken, beef, pork, etc.)
+- `has_veggies` — whether the recipe contains vegetables
+- `high_sugar` — whether sugar PDV exceeds 50
+- `high_sodium` — whether sodium PDV exceeds 50
+- `is_dessert` — whether the recipe is tagged as a dessert (high sugar alone does not mean dessert)
+- `is_vegetarian` — whether the recipe is vegetarian
+- `is_healthy` — whether the recipe is tagged as healthy
+
+Cuisine dummies were also created. This had the most thought applied to it, as I wanted to get a variety of cuisines, but it's impossible to go through all the tags and get literally every one. I tried to just get some of the most popular, and then make dummies based on region (african, american, asian, european, etc) as well as the top 5 specific popular cuisines (italian, mexican, chinese, indian, thai). I also made some dummies for specific regions of asia since there are a lot of asian recipes and I think there may be interesting patterns there.
+
+A lot of the types of foods and cuisines I love the most are actually negatively correlated with the dataset. Then I remember what TTT actually measures. Even if some of these ratings are positively correlated with these dummy variables, they may not be correlated with TTT score because TTT score also takes into account the time it takes to make the recipe. For example, desserts may be highly rated but if they take a long time to make, they may have a low TTT score. A lot of my favorite cuisines and recipes involve a lot of steps and ingredients, which would also lower TTT score. 
+
+For my personal subset and ratings, it makes a little more sense. I don't like vegetables that much, but do like east asian/asian foods in general. It's worth noting that this subset only consists of the top 100 recipes, which is why there are missing values for south asian and southeast asian, as those cuisines are not represented in the top 100. This is important, as we probably don't have many occurrences of these cuisines within the subset, and these correlations are to be taken with a heaping of salt because of that.
 
 ## Baseline Model
 ...
