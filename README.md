@@ -29,6 +29,19 @@ The raw dataset was cleaned in the following steps:
 4. Recipes with <= 0 minutes or > 1440 minutes (24 hours) were removed as these are likely errors
 5. A custom **Tastiness-to-Time (TTT) score** was created by dividing average rating by the log of cooking time, then scaling to a 1-10 range. The log transformation was chosen to reflect diminishing returns of longer cooking times. Essentially, the difference between a 5 and 10 minute recipe matters more than the difference between a 60 and 65 minute recipe
 
+### Univariate Analysis
+
+<iframe src="assets/cooking-time-dist.html" width="800" height="600" frameborder="0"></iframe>
+
+The distribution of cooking times is heavily right skewed, with most recipes taking under 60 minutes. This confirms that the dataset is dominated by quick everyday recipes rather than elaborate long cooking dishes.
+
+### Bivariate Analysis
+
+<iframe src="assets/steps-vs-time.html" width="800" height="600" frameborder="0"></iframe>
+
+There is a weak positive relationship between number of steps and cooking time, but there is a high spread. Many recipes with few steps still take a long time
+
+
 #### Interesting Aggregate:
 | step_group   |   ttt_score |   avg_rating |   minutes |
 |:-------------|------------:|-------------:|----------:|
