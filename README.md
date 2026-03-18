@@ -58,7 +58,7 @@ There is a weak positive relationship between number of steps and cooking time, 
 The `description` column is likely **MNAR** (Missing Not At Random). Reviewers may choose not to write a description just because the recipe is low effort or low quality, meaning the missingness is related to the quality of the recipe itself, which is unobserved in the data. Additional data that could explain this and make the missingness MAR would be the user's engagement level on Food.com, such as how active they are on the platform. A more engaged user would be more likely to write a description regardless of recipe quality.
 
 ### Missingness Dependency
-The `description` column was analyzed to determine whether its missingness depends on other columns. Two permutation tests were run:
+The `description` column was analyzed to determine whether its missingness depends on other columns. Three permutation tests were run:
 
 **Test 1: Does description missingness depend on `n_ingredients`?**
 p-value: 0.0, observed difference: -1.40 ingredients. Since p < 0.05 and the gap is meaningful, description missingness depends on `n_ingredients`. Recipes with more ingredients may be more complex and worth describing, making a description more likely to be written. This is **MAR** with respect to `n_ingredients`.
