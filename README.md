@@ -29,6 +29,15 @@ The raw dataset was cleaned in the following steps:
 4. Recipes with <= 0 minutes or > 1440 minutes (24 hours) were removed as these are likely errors
 5. A custom **Tastiness-to-Time (TTT) score** was created by dividing average rating by the log of cooking time, then scaling to a 1-10 range. The log transformation was chosen to reflect diminishing returns of longer cooking times. Essentially, the difference between a 5 and 10 minute recipe matters more than the difference between a 60 and 65 minute recipe
 
+#### Interesting Aggregate:
+| step_group   |   ttt_score |   avg_rating |   minutes |
+|:-------------|------------:|-------------:|----------:|
+| 1-5          |        3.24 |         4.64 |     45.21 |
+| 6-10         |        2.55 |         4.62 |     58.73 |
+| 11-15        |        2.4  |         4.62 |     66.98 |
+| 16-20        |        2.33 |         4.64 |     80.13 |
+| 20+          |        2.25 |         4.65 |    103.4  |
+
 ## Assessment of Missingness
 ...
 
