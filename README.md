@@ -150,7 +150,35 @@ The model is not overfitting as train and test results are similar. The model is
 <iframe src="assets/baseline-per.html" width="800" height="600" frameborder="0"></iframe>
 
 ## Final Model
-...
+
+While the regression baseline wasn't over/underfitting, the R^2 scores were pretty low, which means there was definitely room for improvement. The following improvements were made:
+
+- Added `log_minutes` instead of raw `minutes`, as the relationship of minutes to TTT score seems to be non linear
+- Added `calories` and `protein_pdv`, which were also correlated with TTT score, albeit less so than the features already in the baseline
+- Added `is_dessert_and_sweet`, an interaction term combining `is_dessert` and `high_sugar`
+- Switched to a RandomForestRegressor to capture any non linear relationships in the data that the linear regression can't
+
+**General Dataset Parameters:**
+n_estimators = 100, standard for random forest. max_depth not specified as the large dataset means overfitting is less of a concern. min_samples_leaf not specified for the same reason. random_state = 42 to ensure reproducibility.
+
+**Personal Subset Parameters:**
+Hyperparameter tuning for the personal subset is more important than for the general dataset, as the personal subset is smaller and more prone to overfitting. A grid search over max_depth and min_samples_leaf was run to find the best balance of bias and variance for this smaller dataset.
+
+<iframe src="assets/final-pred-gen.html" width="800" height="600" frameborder="0"></iframe>
+
+<iframe src="assets/final-resid-gen.html" width="800" height="600" frameborder="0"></iframe>
+
+<iframe src="assets/final-pred-per.html" width="800" height="600" frameborder="0"></iframe>
+
+<iframe src="assets/final-resid-per.html" width="800" height="600" frameborder="0"></iframe>
+
+I'm much happier with the results of the general dataset, as the R^2 score is much higher than the regression baseline, indicating that the model is explaining a lot more of the variance in TTT score. The test RMSE is also lower than the regression baseline, which means the model is making more accurate predictions. The random forest model is likely capturing some non linear relationships in the data that the linear regression couldn't, which is why we see such an improvement in performance.
+
+On the other hand, the personal subset model didn't perform much better than the baseline. The R^2 score actually got worse, and the RMSE is also worse on the test set. This could be due to the small dataset size (n=100), which makes it hard for the random forest to learn complex relationships without overfitting. Additionally, as I mentioned earlier, my personal subset has a lot more variance than the general dataset. That variance combined with the small dataset size may be why the model isn't performing well, as there may not be enough data for the model to learn from without overfitting. It trains on 80 samples and tests on 20 samples, which is a very small test set, so the results may not be very reliable. With such a small dataset, it may be better to stick with a simpler model like linear regression, or to gather more data for my personal ratings to improve the model's performance.
+
+But since the main focus of this project is the general dataset, and my personal ratings were more of a fun side project, I'm happy with the results overall. The random forest model for the general dataset is a significant improvement over the regression and provides a much better fit to the data, while the personal subset model is a good learning experience and shows the challenges of working with small datasets.
+
+
 
 ## Fairness Analysis
 ...
