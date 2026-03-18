@@ -121,13 +121,13 @@ While I do have some features to work with here, the correlations are not super 
 
 Since numeric features alone were not strongly correlated with TTT score, I made categorical dummy variables to capture additional patterns. The following dummy variables were created:
 
-- `has_meat` — whether the recipe contains meat (chicken, beef, pork, etc.)
-- `has_veggies` — whether the recipe contains vegetables
-- `high_sugar` — whether sugar PDV exceeds 50
-- `high_sodium` — whether sodium PDV exceeds 50
-- `is_dessert` — whether the recipe is tagged as a dessert (high sugar alone does not mean dessert)
-- `is_vegetarian` — whether the recipe is vegetarian
-- `is_healthy` — whether the recipe is tagged as healthy
+- `has_meat`: whether the recipe contains meat (chicken, beef, pork, etc.)
+- `has_veggies`: whether the recipe contains vegetables
+- `high_sugar`: whether sugar PDV exceeds 50
+- `high_sodium`: whether sodium PDV exceeds 50
+- `is_dessert`: whether the recipe is tagged as a dessert (high sugar alone does not mean dessert)
+- `is_vegetarian`: whether the recipe is vegetarian
+- `is_healthy`: whether the recipe is tagged as healthy
 
 Cuisine dummies were also created. This had the most thought applied to it, as I wanted to get a variety of cuisines, but it's impossible to go through all the tags and get literally every one. I tried to just get some of the most popular, and then make dummies based on region (african, american, asian, european, etc) as well as the top 5 specific popular cuisines (italian, mexican, chinese, indian, thai). I also made some dummies for specific regions of asia since there are a lot of asian recipes and I think there may be interesting patterns there.
 
@@ -136,7 +136,18 @@ A lot of the types of foods and cuisines I love the most are actually negatively
 For my personal subset and ratings, it makes a little more sense. I don't like vegetables that much, but do like east asian/asian foods in general. It's worth noting that this subset only consists of the top 100 recipes, which is why there are missing values for south asian and southeast asian, as those cuisines are not represented in the top 100. This is important, as we probably don't have many occurrences of these cuisines within the subset, and these correlations are to be taken with a heaping of salt because of that.
 
 ## Baseline Model
-...
+
+**Features:**
+- Quantitative: `minutes`, `n_steps`, `n_ingredients`: standardized with StandardScaler so coefficients are comparable
+- Nominal Binary: `has_meat`, `has_veggies`, `is_vegetarian`, `is_healthy`, `is_dessert`, `high_sugar`: already encoded as 1/0, passed through unchanged
+
+A Linear Regression pipeline was used with StandardScaler on the numeric columns. Binary features are already 1/0 so they are passed through unchanged.
+
+The model is not overfitting as train and test results are similar. The model is a lot less consistent for the personal subset, which makes sense as n=100 compared to the general dataset. The personal subset is also likely more noisy, as it is based on personal ratings which are more subjective and variable than the general dataset ratings. The model only explains 30% and 23% of the variance in TTT score for the general dataset and personal subset respectively, which means there is definitely room for improvement.
+
+<iframe src="assets/baseline-gen.html" width="800" height="600" frameborder="0"></iframe>
+
+<iframe src="assets/baseline-per.html" width="800" height="600" frameborder="0"></iframe>
 
 ## Final Model
 ...
