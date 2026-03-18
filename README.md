@@ -181,4 +181,36 @@ But since the main focus of this project is the general dataset, and my personal
 
 
 ## Fairness Analysis
-...
+
+Since this whole model and project is centered around time to cook, and the most correlated variable in the model is log_minutes, I ran a fairness test to see whether the model performs equally well on quick recipes or slow recipes. Quick recipes are defined as those that take less than 30 minutes to cook, and slow recipes as those that take 30 minutes or more.
+
+**Group X:** Quick recipes (minutes < 30)
+
+**Group Y:** Slow recipes (minutes >= 30)
+
+**Evaluation Metric:** RMSE
+
+**Null Hypothesis:** The model performs equally well on quick and slow recipes, there is no significant difference in RMSE between the two groups.
+
+**Alternative Hypothesis:** The model performs better on quick recipes than on slow recipes, there is a significant difference in RMSE between the two groups.
+
+**Significance Level:** 0.05
+
+Since the TTT score is derived from minutes, and is negatively correlated with minutes, I would expect the model to perform better on quick recipes, as they tend to have higher TTT scores and may be easier for the model to predict accurately. Slow recipes, on the other hand, may have lower TTT scores and more variance, which could make them harder for the model to predict accurately.
+
+<iframe src="assets/fairness-dist.html" width="800" height="600" frameborder="0"></iframe>
+
+Defying my expectations, the model actually performs better on slow recipes than on quick recipes, as evidenced by the lower RMSE for slow recipes. Based on these results, I fail to reject the null hypothesis, as the p value is greater than the significance level of 0.05. This means that there is not enough evidence to conclude that the model performs better on quick recipes than on slow recipes.
+
+In light of the unexpected result, I pivoted the alternative hypothesis to reflect the new direction of the observed difference.
+
+**Updated Alternative Hypothesis:** The model performs better on slow recipes than on quick recipes, there is a significant difference in RMSE between the two groups.
+
+The permutation test with the corrected direction shows that the observed difference in RMSE between quick and slow recipes is statistically significant, with a p value of 0. This means that we can reject the null hypothesis and conclude that there is a significant difference in model performance between quick and slow recipes, but with the model performing better on slow recipes, rather than quick recipes as I originally expected.
+
+Some reasons why this may be the case is that slow recipes are far more represented in the dataset, nearly twice as much. Also quick recipes have a higher variance, which means the model may have a harder time predicting them accurately. Quick recipes have higher mean TTT scores, since the time penalty is lower, and also quick recipes are usually a lot more diverse. I saw quick recipes which were drinks, snacks, meals, desserts, etc. Slow recipes on the other hand were mostly meals, which may be easier for the model to predict accurately, as they may have more consistent features and patterns that the model can learn from.
+
+Overall, this fairness test shows that the model does not perform equally well on quick and slow recipes, and actually performs better on slow recipes, which is an interesting and somewhat surprising finding. This is very strong evidence of unfairness, especially because a p value of 0 means not a single shuffle had a difference as large as the observed difference.
+
+Unfortunately, while the model performs better on slow recipes, it still performs decently on quick recipes, with an RMSE of 0.35, which means that the model is still making reasonably accurate predictions for quick recipes. This means that this model is still useful for the intended purpose of this project, which was to make a model which can predict TTT score, allowing people to find recipes which are tasty and quick to make.
+
