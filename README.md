@@ -20,7 +20,14 @@ The dataset contains recipes submitted to Food.com along with user ratings and r
 
 
 ## Data Cleaning and Exploratory Data Analysis
-...
+### Data Cleaning
+The raw dataset was cleaned in the following steps:
+
+1. The recipes and interactions datasets were merged on recipe ID using a left join to keep all recipes
+2. Ratings of 0 were replaced with `NaN` since a rating of 0 on Food.com means there was no rating, not an actual 0/5
+3. Average rating per recipe was computed and added as a new column. The TTT score will be based on this
+4. Recipes with <= 0 minutes or > 1440 minutes (24 hours) were removed as these are likely errors
+5. A custom **Tastiness-to-Time (TTT) score** was created by dividing average rating by the log of cooking time, then scaling to a 1-10 range. The log transformation was chosen to reflect diminishing returns of longer cooking times. Essentially, the difference between a 5 and 10 minute recipe matters more than the difference between a 60 and 65 minute recipe
 
 ## Assessment of Missingness
 ...
