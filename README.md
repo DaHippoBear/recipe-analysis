@@ -42,7 +42,8 @@ The distribution of cooking times is heavily right skewed, with most recipes tak
 There is a weak positive relationship between number of steps and cooking time, but there is a high spread. Many recipes with few steps still take a long time
 
 
-#### Interesting Aggregate:
+### Interesting Aggregates
+
 | step_group   |   ttt_score |   avg_rating |   minutes |
 |:-------------|------------:|-------------:|----------:|
 | 1-5          |        3.24 |         4.64 |     45.21 |
