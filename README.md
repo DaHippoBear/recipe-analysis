@@ -74,7 +74,25 @@ p-value: 0.186, observed difference: ~0.98 minutes. Since p > 0.05, description 
 Recipes where the description is missing tend to have fewer ingredients on average, supporting the MAR conclusion that description missingness depends on n_ingredients.
 
 ## Hypothesis Testing
-...
+
+I made code which will cycle through the top 100 highest rated recipes, and ask the user (me) to input personal ratings for each recipe. The ratings are saved to a CSV file for later analysis. This is like a side project within the overall project, where I can reflect on how my personal tastes align with the community ratings and the TTT score. Since I made this project question for my own personal use, and I feel that my personal taste differs from the average, I thought it would be interesting to see how my ratings compare to the community ratings and whether the recipe features which are good for the general dataset are also good features to use as predictors for my personal subset. This also makes the project more fun for me :)
+
+**Null Hypothesis:** Recipes containing meat with fewer than 9 steps have the same average TTT score as all other recipes
+
+**Alternative Hypothesis:** Recipes containing meat with fewer than 9 steps have a higher average TTT score than other recipes
+
+**Test Statistic:** Difference in mean TTT scores between low step meat recipes and all other recipes. I want to see if low step meat recipes have a higher TTT score on average, since I think they are a good balance of 
+tastiness and time investment.
+
+**Significance Level:** 0.05 (standard threshold for statistical significance)
+
+**General Dataset Result:** It looks like for the general dataset, the observed difference is about -0.14, which means it is actually the case that low step meat recipes have a slightly lower average TTT score than other recipes. The p value is 1, so I fail to reject the null hypothesis. This suggests that there is no strong evidence that low step meat recipes have higher TTT scores than other recipes in the general dataset.
+
+**Personal Subset Result:** For my personal ratings of the top 100 recipes, the observed difference is about 0.006, which means that low step meat recipes have a very slightly higher average TTT score than other recipes in my personal ratings. However, the p value is 0.467, so we fail to reject the null hypothesis. This suggests that there is no strong evidence that low step meat recipes have higher TTT scores than other recipes in my personal ratings either, although the observed difference is in the direction of the alternative hypothesis.
+
+<iframe src="assets/gen-ts-dist.html" width="800" height="600" frameborder="0"></iframe>
+
+<iframe src="assets/personal-ts-dist.html" width="800" height="600" frameborder="0"></iframe>
 
 ## Framing a Prediction Problem
 ...
